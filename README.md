@@ -2,7 +2,7 @@
 # Boat Data Store: SQL variant
 
 Contents:
-- boats.sql (for now)
+- boats.sql (for now). To provide a sense of how the final schema will probably end up looking like.
 Upcoming:
 - Distributed implementation of SQL database
 - Other components as appropriate

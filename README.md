@@ -6,6 +6,8 @@
 
 - /cluster - Contains the cluster configs, scripts and documentation
 
+- /web: (Under construction) web-based front end for testing and demonstration. Includes Express middleman server to route AJAX requests from client to either mongoDB (not included) or mySQL
+
 ## Upcoming:
 - Distributed implementation of SQL database
 - Other components as appropriate

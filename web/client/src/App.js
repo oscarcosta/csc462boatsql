@@ -1,26 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import QueryForm from './form/QueryForm';
+import QueryResult from './form/QueryResult';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<div className="App">
+			<header className="App-header">
+				<h1>Boat Data Store Query App</h1>
+			</header>
+			<QueryForm />
+			<QueryResult />
+		</div>
+	);
 }
 
 export default App;

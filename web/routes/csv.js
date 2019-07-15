@@ -21,10 +21,13 @@ router.get('/', function(req, res, next) {
 		.pipe(csv())
 		.on('data', customSQL.csvRead)
 		.on('end', () => {
-			// customSQL.insertSpecHeadings().then((tableJSON) => {
-			// 	res.send(tableJSON);
-			// });
-			res.send("Processing complete");
+			customSQL.runInsert().then((tableJSON) => {
+				res.send(tableJSON);
+				customSQL.insertSpecHeadings().then((specJSON) => {
+					res.send(specJSON);
+				});
+			});
+			// res.send("Processing complete");
 		});
 
 });

@@ -1,52 +1,111 @@
 import React from 'react';
-import DBRadio from './DBRadio';
+import DBRadio from '../elements/DBRadio';
+import {AxesFields, LabelledRange} from "../elements/AxesFields";
+import Input from "../elements/Input";
 import './QueryForm.css';
 
 class QueryForm extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {value: ''};
+		this.state = {
+			heading: '',
+			specHeading: '',
+			features: "",
+			gcmna: "",
+			location: "",
+			category: "",
+			material: "",
+			manufacturer: "",
+			dbChoice: 'sql',
+		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
-
 	handleChange(event) {
-		this.setState({value: event.target.value});
+		this.setState({
+			[event.target.name]: event.target.value
+		});
 	}
 	handleSubmit(event) {
-		alert("Submitted: " + this.state.value);
+		// alert("Submitted: " + JSON.stringify(this.state));
 		event.preventDefault();
 	}
 
 	render() {
 		return (
 			<form onSubmit={this.handleSubmit}>
-				<DBRadio />
-				<label htmlFor="name-field">Name:</label>
-				<input
-					type="text"
-					name="name"
-					id="name-field"
-					value={this.state.value}
+				<DBRadio
+					name="dbChoice"
+					choice={this.state.dbChoice}
 					onChange={this.handleChange}
+				/>
+				<div className="textFields">
+					<Input
+						name="heading"
+						label="Heading:"
+						value={this.state.heading}
+						onChange={this.handleChange}
+					/>
+					<Input
+						name="specHeading"
+						label="Spec Heading:"
+						value={this.state.specHeading}
+						onChange={this.handleChange}
+					/>
+					<Input
+						name="gcmna"
+						label="GCMNA Point Person:"
+						value={this.state.gcmna}
+						onChange={this.handleChange}
+					/>
+					<Input
+						name="features"
+						label="Features (Comma separated):"
+						value={this.state.features}
+						onChange={this.handleChange}
+					/>
+					<Input
+						name="location"
+						label="Location:"
+						value={this.state.location}
+						onChange={this.handleChange}
+					/>
+					<Input
+						name="category"
+						label="Category:"
+						value={this.state.category}
+						onChange={this.handleChange}
+					/>
+					<Input
+						name="material"
+						label="Material / Colour:"
+						value={this.state.material}
+						onChange={this.handleChange}
+					/>
+					<Input
+						name="manufacturer"
+						label="Manufacturer:"
+						value={this.state.manufacturer}
+						onChange={this.handleChange}
+					/>
+					<LabelledRange
+						name="weight-one"
+						label="Weight Per Unit"
+					/>
+					<LabelledRange
+						name="quantity"
+						label="Quantity"
+					/>
+				</div>
+
+				<AxesFields
+					value={this.state.axes}
+					onChange={this.state.handleChange}
 				/>
 				<input type="submit" value="Submit"/>
 			</form>
-		);
-	}
-}
-class CenterFields extends React.Component {
-	render() {
-		return (
-			<table className="axes-fields">
-				<thead>
-					<th>Longitudinal</th>
-					<th>Transverse</th>
-					<th>Vertical</th>
-				</thead>
-			</table>
 		);
 	}
 }

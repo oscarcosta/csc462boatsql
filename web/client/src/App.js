@@ -86,7 +86,9 @@ class App extends React.Component {
 			try {
 				query.args = JSON.parse(this.state.write);
 			} catch (error) {
+				alert("Invalid JSON!");
 				this.setState({result: error});
+				return;
 			}
 		}
 		// Okay, query built. Send it off to our controller!

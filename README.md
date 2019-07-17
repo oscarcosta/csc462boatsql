@@ -12,3 +12,9 @@
 - Distributed implementation of SQL database
 - Other components as appropriate
 
+## Running the front end page
+- Navigate to web/client/
+- Create a file, ".env", and set its contents as follows:
+  - `PORT=3001`
+- Head up one level to web/
+- Run `npm start & (cd client && npm start)`

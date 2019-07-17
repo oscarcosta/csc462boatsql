@@ -2,20 +2,18 @@ var express = require('express');
 var router = express.Router();
 
 /*
-	This route is used to read a CSV at a pre-determined location,
-	parse it into sql friendly format,
-	then write to DB as necessary.
+	Here is where we send to mongo or sql, as appropriate
 */
-const csvPath = "data.csv";
 
 const csv = require('csv-parser');  
 const fs = require('fs');
 
-const customSQL = require('../dbSQL');
+const dbSQL = require('../dbSQL');
+const dbMongo = require('../dbMongo');
 
 
 
-router.get('/', function(req, res, next) {
+/* router.get('/', function(req, res, next) {
 	
 	fs.createReadStream(csvPath)
 		.pipe(csv())
@@ -30,5 +28,16 @@ router.get('/', function(req, res, next) {
 			// res.send("Processing complete");
 		});
 
-});
+}); */
+
+
+router.post('/', (req, res, next) => {
+	console.log(JSON.stringify(req.body));
+	if (req.body.source === 'sql' || req.body.source === 'both') {
+		dbSQL.handle_req(req, res);
+	}
+	if (req.body.source === 'mongo' || req.body.source === 'both') {
+		dbMongo.handle_req(req, res);
+	}
+})
 module.exports = router;

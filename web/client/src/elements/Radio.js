@@ -7,20 +7,18 @@ class Radio extends React.Component {
 		this.htmlFor = "radio-" + props.value;
 	}
 	render() {
+		const checked = this.props.selected ? "checked" : null;
 		return (
-			<div className="radio">
-				<label
-					htmlFor={this.htmlFor}
-					label={this.props.label}
-				>
-					<input
-						type="radio"
-						name={this.props.name || null}
-						id={this.htmlFor}
-						value={this.props.value}
-						required={this.props.required || null}
-						onChange={this.props.onChange}
-					/>
+			<div className="Radio">
+				<input
+					type="radio"
+					name={this.props.name || null}
+					id={this.htmlFor}
+					value={this.props.value}
+					checked={checked}
+					onChange={this.props.onChange}
+				/>
+				<label htmlFor={this.htmlFor} label={this.props.label}>
 					{this.props.label}
 				</label>
 			</div>

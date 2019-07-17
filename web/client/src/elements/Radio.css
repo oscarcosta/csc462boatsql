@@ -1,3 +1,12 @@
-.radio {
-	display: inline-block;
+.Radio input {
+	display: none;
+}
+.Radio input + label {
+	font-size: 24px;
+	font-weight: bold;
+	padding: 15px;
+}
+.Radio input:checked + label {
+	background-color: grey;
+	color: white;
 }

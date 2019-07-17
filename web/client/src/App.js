@@ -4,7 +4,7 @@ import ReadForm from './form/ReadForm';
 import QueryResult from './form/QueryResult';
 import WriteForm from "./form/WriteForm";
 import ModeSelector from "./elements/ModeSelector";
-import Axios from 'axios';
+import Axios, * as others from 'axios';
 
 class App extends React.Component {
 	constructor(props) {
@@ -84,10 +84,13 @@ class App extends React.Component {
 			}
 		}
 		// Okay, query built. Send it off to our controller!
-		const showResult = (json) => this.setState({result: json});
+		// const showResult = (json) => this.setState({result: json});
 		Axios.post('/query', query)
-			.then(showResult)
-			.error(showResult)
+			.then(response => {
+				this.setState({result: JSON.stringify(response.data, null, 2)});
+				console.log(response.data);
+			})
+			// .error(error => this.setState({result: error}))
 		;
 	}
 	render() {

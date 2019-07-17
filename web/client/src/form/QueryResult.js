@@ -4,7 +4,7 @@ import './QueryResult.css';
 class QueryResult extends React.Component {
 	render() {
 		return (
-			<div className="QueryResult">{this.props.result}</div>
+			<pre className="QueryResult">{this.props.result}</pre>
 		);
 	}
 }

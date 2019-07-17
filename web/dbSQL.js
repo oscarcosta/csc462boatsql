@@ -138,5 +138,7 @@ exports.csvRead = (row) => {
 };
 
 exports.handle_req = (req, res) => {
-
+	res.json({
+		response: "success"
+	});
 };

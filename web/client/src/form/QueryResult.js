@@ -1,10 +1,12 @@
 import React from 'react';
+import ReactJson from "react-json-view";
 import './QueryResult.css';
 
 class QueryResult extends React.Component {
 	render() {
 		return (
-			<pre className="QueryResult">{this.props.result}</pre>
+			<ReactJson src={this.props.result} />
+			// <pre className="QueryResult">{this.props.result}</pre>
 		);
 	}
 }

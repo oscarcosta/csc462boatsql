@@ -95,7 +95,8 @@ class App extends React.Component {
 		// const showResult = (json) => this.setState({result: json});
 		Axios.post('/query', query)
 			.then(response => {
-				this.setState({result: JSON.stringify(response.data, null, 2)});
+				// this.setState({result: JSON.stringify(response.data, null, 2)});
+				this.setState({result: response.data});
 				console.log({...response.data});
 			})
 			// .error(error => this.setState({result: error}))

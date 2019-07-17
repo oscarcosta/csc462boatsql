@@ -57,8 +57,7 @@ const insert = function (table, values) {
 
 };
 
-
-exports.insertSpecHeadings = async() => {
+const insertSpecHeadings = async() => {
 	connection.connect();
 
 	let sql = `INSERT INTO \`specHeadings\` (\`heading\`, \`name\`) VALUES `;
@@ -92,7 +91,7 @@ exports.insertSpecHeadings = async() => {
 	return JSON.stringify(tableData.specHeadings);
 };
 
-exports.runInsert = async () => {
+const runInsert = async () => {
 	// 2. For specHeading
 	tableData.specHeadings.forEach(e => {
 		e.heading = tableData.headings.findIndex(x => x.name === e.headingRaw);
@@ -113,13 +112,10 @@ exports.runInsert = async () => {
 	return JSON.stringify(tableData);
 }
 
-exports.csvRead = (row) => {
+const csvRead = (row) => {
 	// 1. Create unique list of fields
-	let val;
 	for (var t in tables){
 		if (tables.hasOwnProperty(t)) {
-			val = tables[t];
-			
 			if (!tableData[t].find(x => x.name === row[tables[t]])) {
 				// New entry
 				if (t == "specHeadings") {
@@ -137,6 +133,10 @@ exports.csvRead = (row) => {
 	}
 };
 
-exports.handle_req = (req, res) => {
+const handle_req = (req, res) => {
 	res.json({ ...req.body });
 };
+
+module.exports = {
+	csvRead, handle_req, runInsert, insertSpecHeadings
+}

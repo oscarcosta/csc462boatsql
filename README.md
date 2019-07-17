@@ -13,7 +13,8 @@
 - Other components as appropriate
 
 ## Running the front end page
-- Navigate to `web/client/`
+- In `web/`, run `npm install`
+- Navigate to `web/client/`, run `npm install` again.
 - Create a file, `.env`, and set its contents as follows:
   - `PORT=3001`
 - Head up one level to `web/`

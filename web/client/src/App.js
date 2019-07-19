@@ -56,7 +56,8 @@ class App extends React.Component {
 		let read = this.state.read;
 		// Check if range is text
 		if (name.includes("text_")) {
-			read[event.target.name] = event.target.value;
+
+			read[name.slice(5)] = event.target.value;
 		} else if (name.includes("axis-")) {
 			const field = name.slice(5, 8);
 			const bound = name.slice(-3);
@@ -67,6 +68,7 @@ class App extends React.Component {
 			read[field][bound] = value;
 		}
 		this.setState({ read: read });
+		// console.log(read);
 	}
 	handleWriteChange(event) {
 		this.setState({write: event.target.value});
@@ -84,14 +86,17 @@ class App extends React.Component {
 			try {
 				query.args = JSON.parse(this.state.write);
 			} catch (error) {
+				alert("Invalid JSON!");
 				this.setState({result: error});
+				return;
 			}
 		}
 		// Okay, query built. Send it off to our controller!
 		// const showResult = (json) => this.setState({result: json});
 		Axios.post('/query', query)
 			.then(response => {
-				this.setState({result: JSON.stringify(response.data, null, 2)});
+				// this.setState({result: JSON.stringify(response.data, null, 2)});
+				this.setState({result: response.data});
 				console.log({...response.data});
 			})
 			// .error(error => this.setState({result: error}))

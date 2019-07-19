@@ -4,10 +4,16 @@ import './QueryResult.css';
 
 class QueryResult extends React.Component {
 	render() {
-		return (
-			<ReactJson src={this.props.result} />
-			// <pre className="QueryResult">{this.props.result}</pre>
-		);
+		console.log(this.props.result);
+		if (typeof this.props.result !== 'string') {
+			return (
+				<ReactJson src={this.props.result} />
+			);
+		} else {
+			return (
+				<pre className="QueryResult">{this.props.result}</pre>
+			);
+		}
 	}
 }
 export default QueryResult;

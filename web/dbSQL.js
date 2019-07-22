@@ -132,9 +132,51 @@ const csvRead = (row) => {
 		}
 	}
 };
-
+/**
+ * Primary handler for front end requests.
+ * @param {object} req Input object. JSON data is in req.body
+ * @param {object} res Output. Make sure to write any output into res.json
+ */
 const handle_req = (req, res) => {
-	res.json({ ...req.body });
+	const json = req.body;
+	if (json.mode == "read") {
+		//TODO: read
+		// If a field is present and has a valid value (not empty for strings and >=0 for ints) then its used to filter output
+		// Output:
+		/*
+		0: Heading
+		1: Spec_Heading
+		2: Sorting_Nature_of_Info_Produced
+		3: Features
+		4: Model
+		5: Hyperlink
+		6: Source
+		7: Weight_Per_Unit
+		8: Quantity
+		9: LCG
+		10: TCG
+		11: VCG
+		12: Longitudinal_Moment
+		13: Transverse_Moment
+		14: Vertical_Moment
+		15: Material_And_Color
+		16: Size
+		*/
+		let query; // This will contain our query!
+		connection.query("SELECT * FROM parts", (err, rows, fields) => {
+			if (err) throw err;
+			rows.json({...rows});
+		});
+	} else if (json.mode == "write") {
+		//TODO: write
+	} else {
+		res.json({
+			success: false,
+			error: "Invalid mode",
+		});
+		return;
+	}
+	// res.json({ ...req.body });
 };
 
 module.exports = {

@@ -1,24 +1,63 @@
-
-
-
 const mysql = require('mysql');
-const connection = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	password: 'MyPass!2',
-	database: 'boatdb'
-});
-const tables = {
-	headings: "Heading",
-	specHeadings: "Spec Heading",
-	features: "Features",
-	personnel: "GCMNA Point Person",
-	locations: "Location",
-	categories: "Category",
-	materials: "Material / Color",
-	manufacturers: "Preferred MFG",
-};
-let tableData = {
+const connection = mysql.createConnection(JSON.parse(process.env.MYSQL));
+
+/*
+SQL CSV Columns:
+Heading
+Spec_Heading
+Features
+GCMNA Point Person
+Builder  ID Number
+Location
+Category
+Electrical
+Preferred MFG
+Model
+Hyperlink
+Weight Per Unit (LBS)
+Quantity
+LCG
+TCG
+VCG
+Longitudinal Moment
+Transverse Moment (Port is Neg.)
+Vertical Moment
+Material_And_Color
+Size
+*/
+
+/*
+Heading: '',
+Spec_Heading: '',
+Sorting_Nature_of_Info_Produced: "",
+Features: "",
+Model: "",
+Hyperlink: "",
+Source: "",
+Material_And_Color: "",
+Size: {min: -1, max: -1},
+Weight_Per_Unit: {min: -1, max: -1},
+Quantity: {min: -1, max: -1},
+axes: {
+	lcg: {min: -1, max: -1},
+	tcg: {min: -1, max: -1},
+	vcg: {min: -1, max: -1},
+	lm: {min: -1, max: -1},
+	tm: {min: -1, max: -1},
+	vm: {min: -1, max: -1},
+}
+req.mode can be "read" or "write"
+req.source can be "parts" or "boats". Former is for generic parts DB, latter for boatParts.
+*/
+const nameTables = [ // Just name and ID
+	{ table: "headings", heading: "Heading" },
+	{ table: "personnel", heading: "GCMNA_Point_Person" },
+	{ table: "locations", heading: "Location" },
+	{ table: "categories", heading: "Category" },
+	{ table: "materials", heading: "Material_And_Color" },
+	{ table: "manufacturers", heading: "Preferred_MFG" },
+];
+let tableData = { // We fill up this object during CSV read
 	headings: [],
 	specHeadings: [],
 	personnel: [],
@@ -26,7 +65,12 @@ let tableData = {
 	manufacturers: [],
 	locations: [],
 	features: [],
-	categories: []
+	categories: [],
+	parts: [],
+	boats: [],
+	boatParts: [],
+	boatPartMeta: [],
+	boatPartFeatures: [],
 };
 const insert = function (table, values) {
 	if (table === 'features') return;
@@ -111,7 +155,18 @@ const runInsert = async () => {
 	connection.end();
 	return JSON.stringify(tableData);
 }
-
+/**
+ * Read in one line of CSV input data. Steps:
+ * 1. Write {Heading, Location, Category, Material_And_Color, GCMNA_Point_Person, Preferred_MFG} if the entry does not exist in DB. In either case, add its ID and name to our state
+ * 2. Write {Spec_Heading} if the field is new. Use the saved ref to Heading; obtain ref of this Spec_Heading
+ * 3. If {Boat} is specified, either add its ref or create a ref to a new boat. Otherwise, refer to the first extant boat
+ * 4. Create a new part in `parts` from {Manf, Model, BuilderID, Electrical, Category, Unit_Measurement, Source, Weight_Per_Unit, Size}. Add PartID to refs
+ * 5. Create a new row in `boatparts` from {Boat, Part, Location, GCMNA_Point_Person, Spec_Heading, Quantity, Parent, {CG}, {Moment}, Material_And_Color}
+ * 6. Tokenize {Features} and write to `boatpartfeatures` (with ref to boatpart)
+ * 7. If there are unprocessed fields, write them to `boatpartmeta`
+ * 
+ * @param {object} row One row of CSV data (i.e. a part in a boat)
+ */
 const csvRead = (row) => {
 	// 1. Create unique list of fields
 	for (var t in tables){
@@ -165,7 +220,8 @@ const handle_req = (req, res) => {
 		let query; // This will contain our query!
 		connection.query("SELECT * FROM parts", (err, rows, fields) => {
 			if (err) throw err;
-			rows.json({...rows});
+			res.json({...rows});
+			// res.json({"success": true});
 		});
 	} else if (json.mode == "write") {
 		//TODO: write

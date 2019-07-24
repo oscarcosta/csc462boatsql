@@ -11,7 +11,7 @@ const csvPath = "data.csv";
 const csv = require('csv-parser');  
 const fs = require('fs');
 
-const customSQL = require('../dbSQL');
+const dbSQL = require('../dbSQL');
 
 
 
@@ -19,11 +19,11 @@ router.get('/', function(req, res, next) {
 	
 	fs.createReadStream(csvPath)
 		.pipe(csv())
-		.on('data', customSQL.csvRead)
+		.on('data', dbSQL.csvRead)
 		.on('end', () => {
-			customSQL.runInsert().then((tableJSON) => {
+			dbSQL.runInsert().then((tableJSON) => {
 				res.send(tableJSON);
-				customSQL.insertSpecHeadings().then((specJSON) => {
+				dbSQL.insertSpecHeadings().then((specJSON) => {
 					res.send(specJSON);
 				});
 			});

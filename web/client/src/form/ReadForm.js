@@ -29,69 +29,69 @@ export default function ReadForm(props) {
 		<form onSubmit={props.onSubmit}>
 			<div className="textFields">
 				<Input
-					name="heading"
+					name="Heading"
 					label="Heading:"
-					value={data.heading}
+					value={data.Heading}
 					onChange={props.onChange}
 				/>
 				<Input
-					name="specHeading"
+					name="Spec_Heading"
 					label="Spec Heading:"
-					value={data.specHeading}
+					value={data.Spec_Heading}
 					onChange={props.onChange}
 				/>
 				<Input
-					name="gcmna"
-					label="GCMNA Point Person:"
-					value={data.gcmna}
+					name="Sorting_Nature_of_Info_Produced"
+					label="Sorting Nature of Info Produced ('Spec Item' for part):"
+					value={data.Sorting_Nature_of_Info_Produced}
 					onChange={props.onChange}
 				/>
 				<Input
-					name="features"
+					name="Features"
 					label="Features (Comma separated):"
-					value={data.features}
+					value={data.Features}
 					onChange={props.onChange}
 				/>
 				<Input
-					name="location"
-					label="Location:"
-					value={data.location}
+					name="Model"
+					label="Model Number:"
+					value={data.Model}
 					onChange={props.onChange}
 				/>
 				<Input
-					name="category"
-					label="Category:"
-					value={data.category}
+					name="Hyperlink"
+					label="Hyperlink:"
+					value={data.Hyperlink}
 					onChange={props.onChange}
 				/>
 				<Input
-					name="material"
-					label="Material / Colour:"
-					value={data.material}
-					onChange={props.onChange}
-				/>
-				<Input
-					name="manufacturer"
-					label="Manufacturer:"
-					value={data.manufacturer}
+					name="Source"
+					label="Source:"
+					value={data.Source}
 					onChange={props.onChange}
 				/>
 				<LabelledRange
-					name="size"
-					label="Size"
-					value={data.size}
-					onChange={props.onChange}
-				/>
-				<LabelledRange
-					name="weightOne"
+					name="Weight_Per_Unit"
 					label="Weight Per Unit"
-					value={data.weightOne}
+					value={data.Weight_Per_Unit}
 					onChange={props.onChange}
 				/>
 				<LabelledRange
-					name="quantity"
+					name="Quantity"
 					label="Quantity"
-					value={data.quantity}
+					value={data.Quantity}
+					onChange={props.onChange}
+				/>
+				<Input
+					name="Material_And_Color"
+					label="Material / Color:"
+					value={data.Material_And_Color}
+					onChange={props.onChange}
+				/>
+				<LabelledRange
+					name="Size"
+					label="Size"
+					value={data.Size}
 					onChange={props.onChange}
 				/>
 			</div>

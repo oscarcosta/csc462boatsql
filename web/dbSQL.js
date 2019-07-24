@@ -1,5 +1,10 @@
 const mysql = require('mysql');
-const connection = mysql.createConnection(JSON.parse(process.env.MYSQL));
+const connection = mysql.createConnection({
+	host:     process.env.MYSQL_host,
+	user:     process.env.MYSQL_user,
+	password: process.env.MYSQL_password,
+	database: process.env.MYSQL_database,
+});
 
 /*
 SQL CSV Columns:
@@ -58,19 +63,19 @@ const nameTables = [ // Just name and ID
 	{ table: "manufacturers", heading: "Preferred_MFG" },
 ];
 let tableData = { // We fill up this object during CSV read
-	headings: [],
-	specHeadings: [],
-	personnel: [],
-	materials: [],
-	manufacturers: [],
-	locations: [],
-	features: [],
-	categories: [],
-	parts: [],
-	boats: [],
-	boatParts: [],
-	boatPartMeta: [],
-	boatPartFeatures: [],
+	headings: new Map(),
+	specHeadings: new Map(),
+	personnel: new Map(),
+	materials: new Map(),
+	manufacturers: new Map(),
+	locations: new Map(),
+	features: new Map(),
+	categories: new Map(),
+	parts: new Map(),
+	boats: new Map(),
+	boatParts: new Map(),
+	boatPartMeta: new Map(),
+	boatPartFeatures: new Map(),
 };
 const insert = function (table, values) {
 	if (table === 'features') return;
@@ -155,38 +160,6 @@ const runInsert = async () => {
 	connection.end();
 	return JSON.stringify(tableData);
 }
-/**
- * Read in one line of CSV input data. Steps:
- * 1. Write {Heading, Location, Category, Material_And_Color, GCMNA_Point_Person, Preferred_MFG} if the entry does not exist in DB. In either case, add its ID and name to our state
- * 2. Write {Spec_Heading} if the field is new. Use the saved ref to Heading; obtain ref of this Spec_Heading
- * 3. If {Boat} is specified, either add its ref or create a ref to a new boat. Otherwise, refer to the first extant boat
- * 4. Create a new part in `parts` from {Manf, Model, BuilderID, Electrical, Category, Unit_Measurement, Source, Weight_Per_Unit, Size}. Add PartID to refs
- * 5. Create a new row in `boatparts` from {Boat, Part, Location, GCMNA_Point_Person, Spec_Heading, Quantity, Parent, {CG}, {Moment}, Material_And_Color}
- * 6. Tokenize {Features} and write to `boatpartfeatures` (with ref to boatpart)
- * 7. If there are unprocessed fields, write them to `boatpartmeta`
- * 
- * @param {object} row One row of CSV data (i.e. a part in a boat)
- */
-const csvRead = (row) => {
-	// 1. Create unique list of fields
-	for (var t in tables){
-		if (tables.hasOwnProperty(t)) {
-			if (!tableData[t].find(x => x.name === row[tables[t]])) {
-				// New entry
-				if (t == "specHeadings") {
-					tableData[t].push({
-						name: row[tables[t]],
-						headingRaw: row["Heading"],
-					});
-				} else {
-					tableData[t].push({
-						name: row[tables[t]],
-					});
-				}
-			}
-		}
-	}
-};
 /**
  * Primary handler for front end requests.
  * @param {object} req Input object. JSON data is in req.body

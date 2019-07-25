@@ -3,75 +3,60 @@ import Radio from "./Radio";
 import './ModeSelector.css';
 
 function DBRadio(props) {
-	const name = props.name;
-	const choice = props.choice;
-	const onChange = (e) => props.onChange(e);
 	return (
 		<div className="DBRadio">
 			<Radio
-				name={name}
 				value="sql"
 				label="MySQL"
-				checked={choice === "sql"}
-				onChange={onChange}
+				checked={props.choice === "sql"}
+				onChange={e => props.onChange(e)}
 			/>
 			<Radio
-				name={name}
 				value="mongo"
 				label="MongoDB"
-				checked={choice === "mongo"}
-				onChange={onChange}
+				checked={props.choice === "mongo"}
+				onChange={e => props.onChange(e)}
 			/>
 			<Radio
-				name={name}
 				value="both"
 				label="Both (Performance Comparison)"
-				checked={choice === "both"}
-				onChange={onChange}
+				checked={props.choice === "both"}
+				onChange={e => props.onChange(e)}
 			/>
 		</div>
 	);
 }
 
 function ReadWriteRadio(props) {
-	const name = props.name;
-	const choice = props.choice;
-	const onChange = (e) => props.onChange(e);
 	return (
 		<div className="ReadWriteRadio">
 			<Radio
-				name={name}
 				value="read"
 				label="Read"
-				required={true}
-				checked={choice === "read"}
-				onChange={onChange}
+				checked={props.choice === "read"}
+				onChange={e => props.onChange(e)}
 			/>
 			<Radio
-				name={name}
 				value="write"
 				label="Write"
-				required={true}
-				checked={choice === "write"}
-				onChange={onChange}
+				checked={props.choice === "write"}
+				onChange={e => props.onChange(e)}
 			/>
 		</div>
 	);
 }
 
 function ModeSelector(props) {
-	// const onChange = (e) => props.onChange(e);
+	const handleChange = source => e => props.onChange(source, e.target.value);
 	return (
 		<div className="ModeSelector">
 			<DBRadio
-				name="dbChoice"
 				choice={props.choice}
-				onChange={props.onChange}
+				onChange={handleChange("dbChoice")}
 			/>
 			<ReadWriteRadio
-				name="queryMode"
 				choice={props.queryMode}
-				onChange={props.onChange}
+				onChange={handleChange("queryMode")}
 			/>
 		</div>
 	);

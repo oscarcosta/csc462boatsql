@@ -12,10 +12,9 @@ class Radio extends React.Component {
 			<div className="Radio">
 				<input
 					type="radio"
-					name={this.props.name || null}
 					id={this.htmlFor}
 					value={this.props.value}
-					checked={this.props.checked ? "checked" : null}
+					checked={this.props.checked}
 					onChange={this.props.onChange}
 				/>
 				<label htmlFor={this.htmlFor} label={this.props.label}>

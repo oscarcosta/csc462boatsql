@@ -81,14 +81,6 @@ class App extends React.Component {
 			write: JSON.stringify(writeTemplates[value], null, 2)
 		})
 	}
-	handleModeChange = (event) => {
-		// console.log(event.target);
-		this.setState({
-			[event.target.name]: event.target.value
-		});
-		// console.log({[event.target.name]: event.target.value});
-		console.log(this.state);
-	}
 	handleReadChange = (source, value) => {
 		// `source` is an object whose structure varies based on its `type` property.
 		let read = this.state.read;
@@ -176,7 +168,7 @@ class App extends React.Component {
 				<ModeSelector
 					choice={this.state.dbChoice}
 					queryMode={this.state.queryMode}
-					onChange={this.handleModeChange}
+					onChange={(source, value) => this.setState({ [source]: value })}
 				/>
 				<main>
 					{form}

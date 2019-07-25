@@ -209,5 +209,5 @@ const handle_req = (req, res) => {
 };
 
 module.exports = {
-	csvRead, handle_req, runInsert, insertSpecHeadings
+	handle_req
 }

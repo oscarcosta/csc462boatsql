@@ -3,46 +3,85 @@ import './App.css';
 import ReadForm from './form/ReadForm';
 import QueryResult from './form/QueryResult';
 import WriteForm from "./form/WriteForm";
-import ModeSelector from "./elements/ModeSelector";
+import {ModeSelector} from "./elements/ModeSelector";
 import Axios from 'axios';
 
+const writeTemplates = {
+	boatPart: { // This is the template for a `boatPart` write request. A switch will swap it out with a sample `part` write request
+		Boat: 0, // ID #
+		Part: 0, // ID #
+		Heading: "",
+		Spec_Heading: "",
+		Features: [],
+		Location: "",
+		Manufacturer: "", // Preferred MFG, to be precise
+		Quantity: 0,
+		Parent: 0,
+		Center_Of_Gravity: { "long": 0, "tran": 0, "vert": 0 },
+		Moment_Of_Inertia: { "long": 0, "tran": 0, "vert": 0 },
+		Material_And_Color: "",
+	},
+	part: {
+		Manufacturer: "", // This needs to be here, I think, but its not preferred MFG. Maybe to distinguish multiple MFGs who make the same part?
+		Model: "",
+		Hyperlink: "",
+		BuilderID: "",
+		Category: "",
+		Electrical: "",
+		Unit_Of_Measurement: "",
+		Source: "",
+		Weight: 0.0,
+		Size: "",
+	}
+}
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+		
 		this.state = {
-			queryMode: 'read',
-			dbChoice: 'sql',
+			queryMode: 'read', // read, write
+			dbChoice: 'sql',   // sql, mongo, both
+			dataType: 'boatParts', // parts, boatParts
 			//Read
 			read: {
-				Heading: '',
-				Spec_Heading: '',
-				Sorting_Nature_of_Info_Produced: "",
-				Features: "",
-				Model: "",
-				Hyperlink: "",
-				Source: "",
-				Material_And_Color: "",
-				Size: {min: -1, max: -1},
-				Weight_Per_Unit: {min: -1, max: -1},
-				Quantity: {min: -1, max: -1},
-				axes: {
-					lcg: {min: -1, max: -1},
-					tcg: {min: -1, max: -1},
-					vcg: {min: -1, max: -1},
-					lm: {min: -1, max: -1},
-					tm: {min: -1, max: -1},
-					vm: {min: -1, max: -1},
-				}
+				Boat: null, // Boat ID #
+				Part: null, // Part ID #
+				Heading: null, // Heading text
+				Spec_Heading: null, // Spec_Heading text
+				Features: [], // Array of features
+				Model: null, // Model text
+				Hyperlink: null, // Valid URL
+				Source: null, // text
+				Manufacturer: null, // text. Corresponds to Preferred MFG in original data
+				Location: null, // location on boat, needed for boatPart
+				Category: null, // Category, part of Part (i.e. it's innate)
+				Material_And_Color: null, // This should probably be "Or" TBH
+				Size: null, // text, because mixed units
+				Unit_Of_Measurement: null,
+				Weight_Per_Unit: { min: null, max: null }, // This is part of why we need the units field
+				Quantity: { min: null, max: null }, // This plus weight gives us Weight_Total
+				Center_Of_Gravity: {  // Most visually coherent approach is this way
+					"long": { min: null, max: null },
+					"tran": { min: null, max: null },
+					"vert": { min: null, max: null },
+				},
+				Moment_Of_Inertia: {
+					"long": { min: null, max: null },
+					"tran": { min: null, max: null },
+					"vert": { min: null, max: null },
+				},
 			},
 			//Write
-			write: "",
+			write: JSON.stringify(writeTemplates.boatPart, null, 2), // Did you know you can force JSON to pretty print? I didn't.
 		};
-		this.handleModeChange = this.handleModeChange.bind(this);
-		this.handleWriteChange = this.handleWriteChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleReadChange = this.handleReadChange.bind(this);
 	}
-	handleModeChange(event) {
+	handleTemplateSwitch = (value) => {
+		this.setState({
+			dataType: value,
+			write: JSON.stringify(writeTemplates[value], null, 2)
+		})
+	}
+	handleModeChange = (event) => {
 		// console.log(event.target);
 		this.setState({
 			[event.target.name]: event.target.value
@@ -50,30 +89,33 @@ class App extends React.Component {
 		// console.log({[event.target.name]: event.target.value});
 		console.log(this.state);
 	}
-	handleReadChange(event) {
-		const name = event.target.name;
-		const value = event.target.value;
+	handleReadChange = (source, value) => {
+		// `source` is an object whose structure varies based on its `type` property.
 		let read = this.state.read;
-		// Check if range is text
-		if (name.includes("text_")) {
-
-			read[name.slice(5)] = event.target.value;
-		} else if (name.includes("axis-")) {
-			const field = name.slice(5, 8);
-			const bound = name.slice(-3);
-			read.axes[field][bound] = value;
-		} else {
-			const field = name.slice(0, -4);
-			const bound = name.slice(-3);
-			read[field][bound] = value;
+		switch (source.type) {
+			case "string": // text field
+			case "number": // number (ID) field which is not a range
+				read[source.field] = value;
+				break;
+			case "range": // Numerical range (i.e. min & max)
+				read[source.field][source.bound] = value;
+				break;
+			case "axes": // One of the two axes
+				read[source.axis][source.direction][source.bound] = value;
+				break;
+			case "features": // For features, need to split value into an array
+				read.Features = value.split(/[\s,]+/); // Allows spaces AND commas between features
+				break;
+			default: // error
+				console.log("ERROR: INVALID CHANGE");
+				return;
 		}
-		this.setState({ read: read });
-		// console.log(read);
+		this.setState({read: read});
 	}
-	handleWriteChange(event) {
+	handleWriteChange = (event) => {
 		this.setState({write: event.target.value});
 	}
-	handleSubmit(event) {
+	handleSubmit = (event) => {
 		event.preventDefault();
 		// Two cases. Read => this is a form submit. Write => Send Textarea json
 		let query = {
@@ -109,16 +151,20 @@ class App extends React.Component {
 			form = (
 				<ReadForm
 					data={this.state.read}
+					sourceType={this.state.dataType}
 					onChange={this.handleReadChange}
 					onSubmit={this.handleSubmit}
+					onSourceChange={this.handleTemplateSwitch}
 				/>
 			);
 		} else {
 			form = (
 				<WriteForm
 					input={this.state.write}
+					targetType={this.state.dataType}
 					onChange={this.handleWriteChange}
 					onSubmit={this.handleSubmit}
+					onTargetChange={this.handleTemplateSwitch}
 				/>
 			);
 		}

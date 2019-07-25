@@ -126,7 +126,7 @@ const csvRead = (row) => {
 		}
 	}
 	for (var t in tables){
-		if (tables.hasOwnProperty(t)) {\t{ field:"$1", data: new Map() },
+		if (tables.hasOwnProperty(t)) {
 			if (!tableData[t].find(x => x.name === row[tables[t]])) {
 				// New entry
 				if (t == "specHeadings") {

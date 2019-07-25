@@ -14,5 +14,17 @@
 	left: 0;
 	right: 0;
 	background-color: white;
-	/* min-height: 30px; */
+}
+.SourceSelector, .SourceSelector > div {
+	display: flex;
+	align-items: center;
+}
+.SourceSelector > div {
+	border: 2px solid black;
+	margin-left: 10px;
+}
+.SourceSelector .Radio input + label {
+	display: inline-block;
+	font-size: 18px;
+	padding: 8px;
 }

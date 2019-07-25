@@ -24,8 +24,28 @@ function Input(props) {
 			type="text"
 			name={"text_" + props.name}
 			id={htmlFor}
-			value={props.value}
-			onChange={props.onChange}
+			value={props.value || ""}
+			onChange={e => props.onChange(props.name, e.target.value)}
+		/>
+	);
+	return(
+		<LabelledText
+			name={props.name}
+			className="Input"
+			label={props.label}
+			textField={field}
+		/>
+	);
+}
+function NumberInput(props) {
+	const htmlFor = props.name + "-field";
+	const field = (
+		<input
+			type="number"
+			name={"number_" + props.name}
+			id={htmlFor}
+			value={props.value || ""}
+			onChange={e => props.onChange(props.name, e.target.value)}
 		/>
 	);
 	return(
@@ -59,5 +79,6 @@ function TextArea(props) {
 
 export {
 	Input,
-	TextArea
+	TextArea,
+	NumberInput
 }

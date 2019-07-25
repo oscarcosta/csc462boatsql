@@ -12,21 +12,21 @@ function DBRadio(props) {
 				name={name}
 				value="sql"
 				label="MySQL"
-				selected={choice === "sql"}
+				checked={choice === "sql"}
 				onChange={onChange}
 			/>
 			<Radio
 				name={name}
 				value="mongo"
 				label="MongoDB"
-				selected={choice === "mongo"}
-				onChange={onChange}	
+				checked={choice === "mongo"}
+				onChange={onChange}
 			/>
 			<Radio
 				name={name}
 				value="both"
 				label="Both (Performance Comparison)"
-				selected={choice === "both"}
+				checked={choice === "both"}
 				onChange={onChange}
 			/>
 		</div>
@@ -44,7 +44,7 @@ function ReadWriteRadio(props) {
 				value="read"
 				label="Read"
 				required={true}
-				selected={choice === "read"}
+				checked={choice === "read"}
 				onChange={onChange}
 			/>
 			<Radio
@@ -52,7 +52,7 @@ function ReadWriteRadio(props) {
 				value="write"
 				label="Write"
 				required={true}
-				selected={choice === "write"}
+				checked={choice === "write"}
 				onChange={onChange}
 			/>
 		</div>
@@ -76,4 +76,34 @@ function ModeSelector(props) {
 		</div>
 	);
 }
-export default ModeSelector;
+/**
+ * Inputs: template
+ * @param {*} props 
+ */
+function SourceSelector(props) {
+	return (
+		<div className="SourceSelector">
+			<h3>Replace contents with template JSON:</h3>
+			<div>
+				<Radio
+					name="template-select"
+					value="parts"
+					label="New Part"
+					checked={props.templateChoice === "parts"}
+					onChange={e => props.onTemplateChange("parts")}
+				/>
+				<Radio
+					name="template-select"
+					value="boatParts"
+					label="New BoatPart"
+					checked={props.templateChoice === "boatParts"}
+					onChange={e => props.onTemplateChange("boatParts")}
+				/>
+			</div>
+		</div>
+	);
+}
+export {
+	ModeSelector,
+	SourceSelector
+};

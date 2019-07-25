@@ -4,5 +4,5 @@
 }
 .LabelledText.TextArea textarea {
 	width: 90%;
-	min-height: 20em;
+	height: 25em;
 }

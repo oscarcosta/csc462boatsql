@@ -14,7 +14,7 @@ docker pull mysql/mysql-cluster
 # create the internal docker network
 echo "# Creating docker networkd..."
 
-docker network inspect $CLUSTER &> /dev/null || docker network create $CLUSTER --subnet=192.168.0.0/16
+docker network create $CLUSTER --subnet=192.168.0.0/16
 
 
 # start the management nodes
@@ -29,23 +29,23 @@ docker run -d --net=$CLUSTER --name=$MGM --ip=192.168.0.3 --volume=$(pwd)/mysql-
 # start the data nodes
 echo "# Starting data nodes..."
 
-NODE=ndb1
+NODE='ndb1'
 docker run -d --net=$CLUSTER --name=$NODE --ip=192.168.0.10 --volume=$(pwd)/my.cnf:/etc/my.cnf mysql/mysql-cluster ndbd
 #docker run -d --net=$CLUSTER --name=ndb1 --ip=192.168.0.3 mysql/mysql-cluster ndbd
 
-NODE=ndb2
+NODE='ndb2'
 docker run -d --net=$CLUSTER --name=$NODE --ip=192.168.0.11 --volume=$(pwd)/my.cnf:/etc/my.cnf mysql/mysql-cluster ndbd
 #docker run -d --net=$CLUSTER --name=ndb2 --ip=192.168.0.4 mysql/mysql-cluster ndbd
 
 # start the MySQL server api nodes
 echo "# Starting sql nodes..."
 
-SERVER=mysql1
+SERVER='mysql1'
 docker run -d --net=$CLUSTER --name=$SERVER --ip=192.168.0.20 -e MYSQL_ROOT_PASSWORD=$PASSWORD --volume=$(pwd)/my.cnf:/etc/my.cnf mysql/mysql-cluster mysqld
 #docker run -d --net=$CLUSTER --name=$SERVER --ip=192.168.0.10 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=$PASSWORD mysql/mysql-cluster mysqld
 #docker run -d --net=$CLUSTER --name=$SERVER --ip=192.168.0.10 -e MYSQL_RANDOM_ROOT_PASSWORD=true mysql/mysql-cluster mysqld
 
-SERVER=mysql2
+SERVER='mysql2'
 docker run -d --net=$CLUSTER --name=$SERVER --ip=192.168.0.21 -e MYSQL_ROOT_PASSWORD=$PASSWORD --volume=$(pwd)/my.cnf:/etc/my.cnf mysql/mysql-cluster mysqld
 #docker run -d --net=$CLUSTER --name=$SERVER --ip=192.168.0.10 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=$PASSWORD mysql/mysql-cluster mysqld
 #docker run -d --net=$CLUSTER --name=$SERVER --ip=192.168.0.10 -e MYSQL_RANDOM_ROOT_PASSWORD=true mysql/mysql-cluster mysqld

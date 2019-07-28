@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  management1:
+    image: management
+    networks:
+      - cluster
+
+  ndb1:
+    image: ndb
+    networks:
+      - cluster
+    depends_on:
+      - management1
+
+  ndb2:
+    image: ndb
+    networks:
+      - cluster
+    depends_on:
+      - management1
+  
+  mysql1:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 'MyPass!2'
+    networks: 
+      - cluster
+    depends_on:
+      - management1
+      - ndb1
+      - ndb2
+
+networks:
+  cluster:
+    external: true

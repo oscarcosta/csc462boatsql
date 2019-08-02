@@ -21,14 +21,22 @@ IndexMemory=20M
 datadir=/var/lib/mysql
 
 [ndbd]
-NodeId=2
+NodeId=11
 HostName=ndb1
 
 [ndbd]
-NodeId=3
+NodeId=12
 HostName=ndb2
+
+[ndbd]
+NodeId=13
+HostName=ndb3
+
+[ndbd]
+NodeId=14
+HostName=ndb4
 
 # Mysql nodes
 [mysqld]
-NodeId=4
+NodeId=101
 HostName=mysql1

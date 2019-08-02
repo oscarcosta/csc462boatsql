@@ -3,7 +3,7 @@
 #
 FROM mysql/mysql-cluster
 
-#RUN mkdir /usr/mysql-cluster
+RUN mkdir /usr/mysql-cluster
 
 # Override default config files
 COPY my.cnf /etc/

@@ -3,6 +3,7 @@ version: '3.7'
 services:
   management1:
     image: mysql-cluster
+    hostname: management1
     # networks:
     #   - cluster
     entrypoint: /my_entrypoint.sh
@@ -10,30 +11,72 @@ services:
 
   ndb1:
     image: mysql-cluster
+    hostname: ndb1
     # networks:
     #   - cluster
+    entrypoint: /my_entrypoint.sh
     command: ndbd
     depends_on:
       - management1
 
   ndb2:
     image: mysql-cluster
+    hostname: ndb2
     # networks:
     #   - cluster
+    entrypoint: /my_entrypoint.sh
+    command: ndbd
+    depends_on:
+      - management1
+
+  ndb3:
+    image: mysql-cluster
+    hostname: ndb3
+    # networks:
+    #   - cluster
+    entrypoint: /my_entrypoint.sh
+    command: ndbd
+    depends_on:
+      - management1
+
+  ndb4:
+    image: mysql-cluster
+    hostname: ndb4
+    # networks:
+    #   - cluster
+    entrypoint: /my_entrypoint.sh
     command: ndbd
     depends_on:
       - management1
   
   mysql1:
     image: mysql-cluster
+    hostname: mysql1
     # networks:
     #   - cluster
     environment:
       - MYSQL_ROOT_PASSWORD=Password
+    entrypoint: /my_entrypoint.sh
     command: mysqld
     depends_on:
-      - ndb1
-      - ndb2
+      - management1
+
+  web1:
+    image: web-app
+    hostname: web1
+    # networks:
+    #   - cluster
+    ports:
+      - "80:3000"
+    environment:
+      - MYSQL_host='mysql1'
+      - MYSQL_user='root'
+      - MYSQL_password=''
+      - MYSQL_database='boatdb'
+      - CSV_filename='data.csv'
+    command: /bin/bash -c "cd /usr/src/web_app && npm install -y && npm start"
+    depends_on:
+      - mysql1
 
 #networks:
 #  cluster:

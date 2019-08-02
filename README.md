@@ -26,3 +26,4 @@ I've converted the web folder into a submodule. To update it, do the following:
 - `git pull`, should delete the contents of the `web/` folder.
   - If `web/` folder is not empty, then run `rm -rf web/*`
 - `git submodule update --init --recursive`
+- In the future, to update your submodules, you can either `git pull` from the submodule folder (`web/` in this case), or just run `git pull && git submodule update --recursive` from the main folder.

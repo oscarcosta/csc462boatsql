@@ -19,3 +19,10 @@
   - `PORT=3001`
 - Head up one level to `web/`
 - Run `npm start & (cd client && npm start)`
+
+## Integrating the submodule
+I've converted the web folder into a submodule. To update it, do the following:
+- Navigate to the main folder of the repo.
+- `git pull`, should delete the contents of the `web/` folder.
+  - If `web/` folder is not empty, then run `rm -rf web/*`
+- `git submodule update --init --recursive`

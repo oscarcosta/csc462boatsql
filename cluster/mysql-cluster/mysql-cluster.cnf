@@ -1,0 +1,34 @@
+# config.ini: This file, sometimes known as the global configuration file, 
+# is read only by the NDB Cluster management server, which then distributes 
+# the information contained therein to all processes participating in the cluster. 
+# config.ini contains a description of each node involved in the cluster. This includes 
+# configuration parameters for data nodes and configuration parameters for connections 
+# between all nodes in the cluster. 
+
+# Management nodes
+[ndb_mgmd default]
+datadir=/var/lib/mysql
+
+[ndb_mgmd]
+NodeId=1
+Hostname=management1
+
+# Data nodes
+[ndbd default]
+NoOfReplicas=2
+DataMemory=100M
+IndexMemory=20M
+datadir=/var/lib/mysql
+
+[ndbd]
+NodeId=2
+HostName=ndb1
+
+[ndbd]
+NodeId=3
+HostName=ndb2
+
+# Mysql nodes
+[mysqld]
+NodeId=4
+HostName=mysql1

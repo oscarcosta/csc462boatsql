@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  management1:
+    image: mysql-cluster
+    # networks:
+    #   - cluster
+    entrypoint: /my_entrypoint.sh
+    command: ndb_mgmd --ndb-nodeid=1
+
+  ndb1:
+    image: mysql-cluster
+    # networks:
+    #   - cluster
+    command: ndbd
+    depends_on:
+      - management1
+
+  ndb2:
+    image: mysql-cluster
+    # networks:
+    #   - cluster
+    command: ndbd
+    depends_on:
+      - management1
+  
+  mysql1:
+    image: mysql-cluster
+    # networks:
+    #   - cluster
+    environment:
+      - MYSQL_ROOT_PASSWORD=Password
+    command: mysqld
+    depends_on:
+      - ndb1
+      - ndb2
+
+#networks:
+#  cluster:
+#    external: true # Use a pre-existing network

@@ -1,0 +1,3 @@
+[submodule "web"]
+	path = web
+	url = git@github.com:ragav-kumar/csc462-boat-web.git

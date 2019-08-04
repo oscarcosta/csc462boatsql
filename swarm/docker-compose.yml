@@ -4,16 +4,16 @@ services:
   management1:
     image: mysql-cluster
     hostname: management1
-    # networks:
-    #   - cluster
+    networks:
+      - cluster
     entrypoint: /my_entrypoint.sh
     command: ndb_mgmd --ndb-nodeid=1
 
   ndb1:
     image: mysql-cluster
     hostname: ndb1
-    # networks:
-    #   - cluster
+    networks:
+      - cluster
     entrypoint: /my_entrypoint.sh
     command: ndbd
     depends_on:
@@ -22,8 +22,8 @@ services:
   ndb2:
     image: mysql-cluster
     hostname: ndb2
-    # networks:
-    #   - cluster
+    networks:
+      - cluster
     entrypoint: /my_entrypoint.sh
     command: ndbd
     depends_on:
@@ -32,8 +32,8 @@ services:
   ndb3:
     image: mysql-cluster
     hostname: ndb3
-    # networks:
-    #   - cluster
+    networks:
+      - cluster
     entrypoint: /my_entrypoint.sh
     command: ndbd
     depends_on:
@@ -42,8 +42,8 @@ services:
   ndb4:
     image: mysql-cluster
     hostname: ndb4
-    # networks:
-    #   - cluster
+    networks:
+      - cluster
     entrypoint: /my_entrypoint.sh
     command: ndbd
     depends_on:
@@ -52,8 +52,8 @@ services:
   mysql1:
     image: mysql-cluster
     hostname: mysql1
-    # networks:
-    #   - cluster
+    networks:
+      - cluster
     environment:
       - MYSQL_ROOT_PASSWORD=Password
       - MYSQL_DATABASE=boatdb
@@ -67,8 +67,8 @@ services:
   web1:
     image: web-app
     hostname: web1
-    # networks:
-    #   - cluster
+    networks:
+      - cluster
     ports:
       - "80:3000"
     environment:
@@ -81,6 +81,6 @@ services:
     depends_on:
       - mysql1
 
-#networks:
-#  cluster:
+networks:
+  cluster:
 #    external: true # Use a pre-existing network

@@ -7,5 +7,8 @@ docker build --no-cache -t mysql-cluster ./mysql-cluster/
 cp -r ../web web-app/web
 docker build --no-cache -t web-app ./web-app/
 
+# create the docker network
+docker network create --attachable --driver overlay cluster
+
 # deploy all
-docker-compose up
+docker stack deploy -c docker-compose.yml boat

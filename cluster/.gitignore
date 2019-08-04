@@ -1,2 +1,3 @@
 # web/ is build on deployment time
 web-app/web/*
+mysql-cluster/boat.sql

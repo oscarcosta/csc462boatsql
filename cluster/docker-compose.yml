@@ -56,6 +56,9 @@ services:
     #   - cluster
     environment:
       - MYSQL_ROOT_PASSWORD=Password
+      - MYSQL_DATABASE=boatdb
+      - MYSQL_USER=boat
+      - MYSQL_PASSWORD=boat
     entrypoint: /my_entrypoint.sh
     command: mysqld
     depends_on:
@@ -69,11 +72,11 @@ services:
     ports:
       - "80:3000"
     environment:
-      - MYSQL_host='mysql1'
-      - MYSQL_user='root'
-      - MYSQL_password=''
-      - MYSQL_database='boatdb'
-      - CSV_filename='data.csv'
+      - MYSQL_host=mysql1
+      - MYSQL_database=boatdb
+      - MYSQL_user=boat
+      - MYSQL_password=boat
+      - CSV_filename=data.csv
     command: /bin/bash -c "cd /usr/src/web_app && npm install -y && npm start"
     depends_on:
       - mysql1

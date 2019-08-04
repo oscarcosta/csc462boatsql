@@ -1,6 +1,7 @@
 #!/bin/bash
 
-## swarm ##
+####################
+## swarm
 
 ## Init swarm
 # docker swarm init --listen-addr=eth0
@@ -17,7 +18,15 @@
 # docker swarm leave --force
 
 
-## stack ##
+####################
+## node
+
+## List nodes
+# docker node ls
+
+
+####################
+## stack
 
 ## List deployed stack
 # docker stack ls
@@ -30,14 +39,16 @@
 # docker stack rm boatapp
 
 
-## service ##
+####################
+## service
 
 ## Show/list services details
 # docker service ls
 # docker service ps boatapp_web
 
 
-## containers ##
+####################
+## containers
 
 ## Verify the containers
 # docker ps

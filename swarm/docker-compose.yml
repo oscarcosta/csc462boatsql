@@ -87,6 +87,10 @@ services:
   # Docker Visualizer
   visualizer:
     image: dockersamples/visualizer:stable
+    networks: 
+      - cluster_net
+    ports:
+      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     deploy:

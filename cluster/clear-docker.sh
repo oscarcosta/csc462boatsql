@@ -8,7 +8,7 @@ docker rm `docker ps -qa`
 
 # Remove all images
 echo "Removing all images..."
-docker rmi -f `docker images -qa `
+docker rmi -f `docker images -qa`
 
 # Remove all volumes
 echo "Removing all volumes..."

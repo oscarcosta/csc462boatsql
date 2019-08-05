@@ -3,7 +3,7 @@ version: '3.7'
 services:
   # MySQL NDB Manager
   management:
-    image: mysql-cluster
+    image: oscarcosta/boat-mysql-cluster
     hostname: management
     networks: 
       - cluster_net
@@ -17,7 +17,7 @@ services:
 
   # MySQL NDB Data Nodes
   ndb1:
-    image: mysql-cluster
+    image: oscarcosta/boat-mysql-cluster
     hostname: ndb1
     networks: 
       - cluster_net
@@ -30,7 +30,7 @@ services:
         constraints: [node.labels.type == data]
 
   ndb2:
-    image: mysql-cluster
+    image: oscarcosta/boat-mysql-cluster
     hostname: ndb2
     networks: 
       - cluster_net
@@ -44,7 +44,7 @@ services:
 
   # MySQL API Nodes
   mysql:
-    image: mysql-cluster
+    image: oscarcosta/boat-mysql-cluster
     hostname: mysql
     networks: 
       - cluster_net
@@ -64,7 +64,7 @@ services:
 
   # Web App
   web:
-    image: web-app
+    image: oscarcosta/boat-web-app
     hostname: web
     networks: 
       - cluster_net

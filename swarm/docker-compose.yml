@@ -1,17 +1,45 @@
 version: '3.7'
 
 services:
+  # Docker Visualizer
+  visualizer:
+    image: dockersamples/visualizer:stable
+    hostname: visualizer
+    networks: 
+      - cluster_net
+    ports:
+      - 8080:8080
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  # Gatekeeper
+  gatekeeper:
+    image: oscarcosta/gatekeeper
+    hostname: gatekeeper
+    networks: 
+      - cluster_net
+    ports:
+      - 8180:8180
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+  
   # MySQL NDB Manager
   management:
     image: oscarcosta/boat-mysql-cluster
     hostname: management
     networks: 
       - cluster_net
-    entrypoint: /my_entrypoint.sh
+    entrypoint: /startup.sh
     command: ndb_mgmd --ndb-nodeid=1
+    depends_on:
+      - gatekeeper
     deploy:
       #replicas: 3
-      endpoint_mode: dnsrr
+      #endpoint_mode: dnsrr
       placement:
         #constraints: [node.labels.type == services]
         constraints: [node.role == manager]
@@ -22,12 +50,15 @@ services:
     hostname: ndb1
     networks: 
       - cluster_net
-    entrypoint: /my_entrypoint.sh
+    environment:
+      - NDBID=1
+    entrypoint: /startup.sh
     command: ndbd
     depends_on:
+      - gatekeeper
       - management
     deploy:
-      endpoint_mode: dnsrr
+      #endpoint_mode: dnsrr
       placement:
         constraints: [node.labels.type == data]
 
@@ -36,12 +67,15 @@ services:
     hostname: ndb2
     networks: 
       - cluster_net
-    entrypoint: /my_entrypoint.sh
+    environment:
+      - NDBID=2
+    entrypoint: /startup.sh
     command: ndbd
     depends_on:
+      - gatekeeper
       - management
     deploy:
-      endpoint_mode: dnsrr
+      #endpoint_mode: dnsrr
       placement:
         constraints: [node.labels.type == data]
 
@@ -56,13 +90,16 @@ services:
       - MYSQL_DATABASE=boatdb
       - MYSQL_USER=boat
       - MYSQL_PASSWORD=boat
-    entrypoint: /my_entrypoint.sh
+    entrypoint: /startup.sh
     command: mysqld
     depends_on:
+      - gatekeeper
       - management
+      - ndb1
+      - ndb2
     deploy:
       #replicas: 3
-      endpoint_mode: dnsrr
+      #endpoint_mode: dnsrr
       placement:
         constraints: [node.labels.type == services]
 
@@ -73,7 +110,7 @@ services:
     networks: 
       - cluster_net
     ports:
-      - "80:80"
+      - 80:80
     environment:
       - MYSQL_host=mysql1
       - MYSQL_database=boatdb
@@ -87,19 +124,6 @@ services:
       #replicas: 3
       placement:
         constraints: [node.labels.type == services]
-
-  # Docker Visualizer
-  visualizer:
-    image: dockersamples/visualizer:stable
-    networks: 
-      - cluster_net
-    ports:
-      - "8080:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
 
 networks:
   cluster_net:

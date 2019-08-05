@@ -26,19 +26,16 @@
 
 ### Manager
 
-ssh -i boatkey.pem ubuntu@ec2-54-149-179-164.us-west-2.compute.amazonaws.com
+ssh -i boatkey.pem ec2-user@34.212.145.75
 
-* public ip = 54.149.179.164
-* private ip = 172.31.30.87
+* private ip = 172.31.21.236
 
 ### Workers
 
-ssh -i boatkey.pem ubuntu@ec2-52-39-164-186.us-west-2.compute.amazonaws.com
+ssh -i boatkey.pem ec2-user@34.220.188.80
 
-* public ip = 52.39.164.186
-* private ip = 172.31.31.54
+* private ip = 172.31.30.156
 
-ssh -i boatkey.pem ubuntu@ec2-52-25-8-71.us-west-2.compute.amazonaws.com
+ssh -i boatkey.pem ec2-user@18.237.96.62
 
-* public ip = 52.25.8.71
-* private ip = 172.31.22.142
+* private ip = 172.31.28.40

@@ -4,32 +4,13 @@
 # docker ps
 
 ####################
-## swarm
-
-## Init swarm
-# docker swarm init --listen-addr=eth0
-
-## Join as a manager
-# docker swarm join-token manager
-
-## Get join token
-# docker swarm join-token worker
-
-## Join as a worker
-# docker swarm join \
-#  --token SWMTKN-1-1fchodgswskjw1th54s735jg4sf6s1lkpxn6040phh4ximx1fp-159r72ehyu4p3il9c083vgfh1 \
-#  172.31.30.87:2377
-
-## Leave swarm
-# docker swarm leave --force
-
-####################
 ## node
 
 # docker node ls
 
-## Remove a node
+## Remove nodes
 # docker node rm NODE_ID
+# docker node rm `docker node ls -q`
 
 ####################
 ## stack
@@ -55,11 +36,14 @@
 ## Scale up a service
 # docker service scale boatapp_web=2
 
-## Remove a service
+## Remove service
 # docker service rm boatapp_web
+# docker service rm `docker service ls -q`
 
 ####################
 ## mysql container
+
+# docker container ls
 
 ## Verify the mysql cluster
 # docker exec -it cluster_mysql1_1 ndb_mgm -e "show"
@@ -72,3 +56,5 @@
 
 ## Container shell access
 # docker exec -it cluster_mysql1_1 bash 
+
+# docker exec boatapp_management getent hosts ndb1 

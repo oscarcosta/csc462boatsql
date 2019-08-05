@@ -37,6 +37,7 @@
 # docker stack ls
 # docker stack services boatapp
 # docker stack ps boatapp
+# docker stack ps --format "{{.Name}} {{.Node}} {{.Error}}" --no-trunc boatapp
 
 ## Remove stack
 # docker stack rm boatapp
@@ -46,8 +47,10 @@
 
 # docker service ls
 # docker service ps boatapp_web
+
 # docker service inspect --pretty boatapp_web
 # docker service logs boatapp_web
+# docker service logs -f boatapp_management
 
 ## Scale up a service
 # docker service scale boatapp_web=2

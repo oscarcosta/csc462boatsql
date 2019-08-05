@@ -11,9 +11,10 @@ services:
     command: ndb_mgmd --ndb-nodeid=1
     deploy:
       #replicas: 3
+      endpoint_mode: dnsrr
       placement:
-        constraints: [node.labels.type == services]
-        #constraints: [node.role == manager]
+        #constraints: [node.labels.type == services]
+        constraints: [node.role == manager]
 
   # MySQL NDB Data Nodes
   ndb1:

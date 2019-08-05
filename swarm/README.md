@@ -14,6 +14,8 @@
 
 **configure-docker.sh** - Configure the docker nodes (labels)
 
+**publish-images.sh** - Publish images in Docker Hub
+
 **deploy-mysql-cluster.sh** - deploy mysql cluster + web app using docker compose
 
 **deploy-swarm.sh** - deploy mysql cluster + web app using docker swarm

@@ -12,3 +12,6 @@ docker network create --driver overlay cluster_net
 
 # deploy all
 docker stack deploy -c docker-compose.yml boatapp
+
+# undeploy
+# docker stack rm boatapp

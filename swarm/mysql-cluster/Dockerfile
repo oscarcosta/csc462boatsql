@@ -9,6 +9,7 @@ RUN mkdir /usr/mysql-cluster
 COPY my.cnf /etc/
 COPY mysql-cluster.cnf /etc/
 COPY my_entrypoint.sh /my_entrypoint.sh
+COPY startup.sh /startup.sh
 
 # copy database init script
 COPY boat.sql /docker-entrypoint-initdb.d/

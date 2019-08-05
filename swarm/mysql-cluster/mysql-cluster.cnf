@@ -11,7 +11,7 @@ datadir=/var/lib/mysql
 
 [ndb_mgmd]
 NodeId=1
-Hostname=management1
+Hostname=management
 
 # Data nodes
 [ndbd default]
@@ -28,15 +28,19 @@ HostName=ndb1
 NodeId=12
 HostName=ndb2
 
-[ndbd]
-NodeId=13
-HostName=ndb3
+#[ndbd]
+#NodeId=13
+#HostName=ndb3
 
-[ndbd]
-NodeId=14
-HostName=ndb4
+#[ndbd]
+#NodeId=14
+#HostName=ndb4
 
 # Mysql nodes
 [mysqld]
 NodeId=101
-HostName=mysql1
+HostName=mysql
+
+#[mysqld]
+#NodeId=101
+#HostName=mysql

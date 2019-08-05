@@ -8,7 +8,7 @@ cp -r ../web web-app/web
 docker build --no-cache -t web-app ./web-app/
 
 # create the docker network
-docker network create --attachable --driver overlay cluster_net
+docker network create --driver overlay --attachable cluster_net
 
 # deploy all
 docker stack deploy -c docker-compose.yml boatapp

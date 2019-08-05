@@ -1,58 +1,52 @@
 version: '3.7'
 
 services:
-  management1:
+  # MySQL NDB Manager
+  management:
     image: mysql-cluster
-    hostname: management1
-    networks:
+    hostname: management
+    networks: 
       - cluster_net
     entrypoint: /my_entrypoint.sh
     command: ndb_mgmd --ndb-nodeid=1
+    deploy:
+      #replicas: 3
+      placement:
+        constraints: [node.labels.type == services]
+        #constraints: [node.role == manager]
 
+  # MySQL NDB Data Nodes
   ndb1:
     image: mysql-cluster
     hostname: ndb1
-    networks:
+    networks: 
       - cluster_net
     entrypoint: /my_entrypoint.sh
     command: ndbd
     depends_on:
-      - management1
+      - management
+    deploy:
+      placement:
+        constraints: [node.labels.type == data]
 
   ndb2:
     image: mysql-cluster
     hostname: ndb2
-    networks:
+    networks: 
       - cluster_net
     entrypoint: /my_entrypoint.sh
     command: ndbd
     depends_on:
-      - management1
+      - management
+    deploy:
+      placement:
+        constraints: [node.labels.type == data]
 
-  ndb3:
+  # MySQL API Nodes
+  mysql:
     image: mysql-cluster
-    hostname: ndb3
-    networks:
-      - cluster_net
-    entrypoint: /my_entrypoint.sh
-    command: ndbd
-    depends_on:
-      - management1
-
-  ndb4:
-    image: mysql-cluster
-    hostname: ndb4
-    networks:
-      - cluster_net
-    entrypoint: /my_entrypoint.sh
-    command: ndbd
-    depends_on:
-      - management1
-  
-  mysql1:
-    image: mysql-cluster
-    hostname: mysql1
-    networks:
+    hostname: mysql
+    networks: 
       - cluster_net
     environment:
       - MYSQL_ROOT_PASSWORD=Password
@@ -62,12 +56,17 @@ services:
     entrypoint: /my_entrypoint.sh
     command: mysqld
     depends_on:
-      - management1
+      - management
+    deploy:
+      #replicas: 3
+      placement:
+        constraints: [node.labels.type == services]
 
-  web1:
+  # Web App
+  web:
     image: web-app
-    hostname: web1
-    networks:
+    hostname: web
+    networks: 
       - cluster_net
     ports:
       - "80:80"
@@ -79,12 +78,15 @@ services:
       - CSV_filename=data.csv
     command: /bin/bash -c "cd /usr/src/web_app && npm install -y && npm start"
     depends_on:
-      - mysql1
+      - mysql
+    deploy:
+      #replicas: 3
+      placement:
+        constraints: [node.labels.type == services]
 
+  # Docker Visualizer
   visualizer:
     image: dockersamples/visualizer:stable
-    ports:
-      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     deploy:
@@ -93,4 +95,4 @@ services:
 
 networks:
   cluster_net:
-#    external: true # Use a pre-existing network
+    external: true # Use a pre-existing network

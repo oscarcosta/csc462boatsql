@@ -85,7 +85,6 @@ services:
       - mysql
     deploy:
       #replicas: 3
-      endpoint_mode: dnsrr
       placement:
         constraints: [node.labels.type == services]
 

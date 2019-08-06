@@ -4,9 +4,13 @@
 ## Contents:
 - boats.sql (for now). To provide a sense of how the final schema will probably end up looking like.
 
-- /cluster - Contains the cluster configs, scripts and documentation
+- /swarm - Contains the front end cluster configs, scripts and documentation
 
 - /web: (Under construction) web-based front end for testing and demonstration. Includes Express middleman server to route AJAX requests from client to either mongoDB (not included) or mySQL
+
+- /mysql - Contains mysql cluster config files
+
+~~- /mysql-docker - Contains mysql cluster config files using docker (deprecated)~~
 
 ## Upcoming:
 - Distributed implementation of SQL database

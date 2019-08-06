@@ -15,14 +15,28 @@ services:
       placement:
         constraints: [node.role == manager]
 
+  # Gatekeeper
+  gatekeeper:
+    image: oscarcosta/gatekeeper
+    hostname: gatekeeper
+    networks: 
+      - cluster_net
+    ports:
+      - 8180:8180
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+  
   # MySQL NDB Manager
   management:
     image: oscarcosta/boat-mysql-cluster
     hostname: management
     networks: 
       - cluster_net
-    entrypoint: /my_entrypoint.sh
+    entrypoint: /startup.sh
     command: ndb_mgmd --ndb-nodeid=1
+    depends_on:
+      - gatekeeper
     deploy:
       #replicas: 3
       #endpoint_mode: dnsrr
@@ -36,9 +50,12 @@ services:
     hostname: ndb1
     networks: 
       - cluster_net
-    entrypoint: /my_entrypoint.sh
+    environment:
+      - NDBID=1
+    entrypoint: /startup.sh
     command: ndbd
     depends_on:
+      - gatekeeper
       - management
     deploy:
       #endpoint_mode: dnsrr
@@ -50,9 +67,12 @@ services:
     hostname: ndb2
     networks: 
       - cluster_net
-    entrypoint: /my_entrypoint.sh
+    environment:
+      - NDBID=2
+    entrypoint: /startup.sh
     command: ndbd
     depends_on:
+      - gatekeeper
       - management
     deploy:
       #endpoint_mode: dnsrr
@@ -70,9 +90,10 @@ services:
       - MYSQL_DATABASE=boatdb
       - MYSQL_USER=boat
       - MYSQL_PASSWORD=boat
-    entrypoint: /my_entrypoint.sh
+    entrypoint: /startup.sh
     command: mysqld
     depends_on:
+      - gatekeeper
       - management
       - ndb1
       - ndb2

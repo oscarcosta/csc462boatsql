@@ -1,7 +1,7 @@
 #
 # https://github.com/mysql/mysql-docker/tree/mysql-cluster
 #
-FROM mysql/mysql-cluster
+FROM oscarcosta/mysql-cluster
 
 RUN mkdir /usr/mysql-cluster
 

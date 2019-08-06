@@ -10,7 +10,7 @@
 
 - /mysql - Contains mysql cluster config files
 
-~~- /mysql-docker - Contains mysql cluster config files using docker (deprecated)~~
+- /mysql-docker - Contains mysql cluster config files using docker (deprecated)
 
 ## Upcoming:
 - Distributed implementation of SQL database

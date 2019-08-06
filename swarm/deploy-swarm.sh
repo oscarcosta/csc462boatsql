@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # create the docker network
-docker network create --driver overlay cluster_net
+docker network create --driver overlay --attachable cluster
 
 # deploy all
 #docker stack deploy -c docker-compose-gatekeeper.yml boatapp

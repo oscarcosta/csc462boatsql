@@ -26,16 +26,16 @@
 
 ### Manager
 
-ssh -i boatkey.pem ec2-user@34.212.145.75
+ssh -i boatkey.pem ubuntu@35.162.107.88
 
-* private ip = 172.31.21.236
+* private ip = 172.31.29.253
 
 ### Workers
 
-ssh -i boatkey.pem ec2-user@34.220.188.80
+ssh -i boatkey.pem ubuntu@54.245.193.17
 
-* private ip = 172.31.30.156
+* private ip = 172.31.26.64
 
-ssh -i boatkey.pem ec2-user@18.237.96.62
+ssh -i boatkey.pem ubuntu@18.236.164.63
 
-* private ip = 172.31.28.40
+* private ip = 172.31.17.237

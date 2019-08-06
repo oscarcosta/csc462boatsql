@@ -4,9 +4,8 @@ services:
   # Docker Visualizer
   visualizer:
     image: dockersamples/visualizer:stable
-    hostname: visualizer
     networks: 
-      - cluster_net
+      - cluster
     ports:
       - 8080:8080
     volumes:
@@ -18,9 +17,8 @@ services:
   # MySQL NDB Manager
   management:
     image: oscarcosta/boat-mysql-cluster
-    hostname: management
     networks: 
-      - cluster_net
+      - cluster
     entrypoint: /my_entrypoint.sh
     command: ndb_mgmd --ndb-nodeid=1
     deploy:
@@ -33,9 +31,8 @@ services:
   # MySQL NDB Data Nodes
   ndb1:
     image: oscarcosta/boat-mysql-cluster
-    hostname: ndb1
     networks: 
-      - cluster_net
+      - cluster
     entrypoint: /my_entrypoint.sh
     command: ndbd
     depends_on:
@@ -47,9 +44,8 @@ services:
 
   ndb2:
     image: oscarcosta/boat-mysql-cluster
-    hostname: ndb2
     networks: 
-      - cluster_net
+      - cluster
     entrypoint: /my_entrypoint.sh
     command: ndbd
     depends_on:
@@ -62,9 +58,8 @@ services:
   # MySQL API Nodes
   mysql:
     image: oscarcosta/boat-mysql-cluster
-    hostname: mysql
     networks: 
-      - cluster_net
+      - cluster
     environment:
       - MYSQL_ROOT_PASSWORD=Password
       - MYSQL_DATABASE=boatdb
@@ -85,13 +80,12 @@ services:
   # Web App
   web:
     image: oscarcosta/boat-web-app
-    hostname: web
     networks: 
-      - cluster_net
+      - cluster
     ports:
-      - 80:80
+      - 80:3000
     environment:
-      - MYSQL_host=mysql1
+      - MYSQL_host=mysql
       - MYSQL_database=boatdb
       - MYSQL_user=boat
       - MYSQL_password=boat
@@ -105,5 +99,5 @@ services:
         constraints: [node.labels.type == services]
 
 networks:
-  cluster_net:
+  cluster:
     external: true # Use a pre-existing network

@@ -25,3 +25,7 @@ docker swarm join \
 ## Leave swarm
 # docker swarm leave --force
 
+## Configure nodes labels
+docker node update --label-add type=services ip-172-31-29-253
+docker node update --label-add type=data ip-172-31-26-64
+docker node update --label-add type=data ip-172-31-17-237

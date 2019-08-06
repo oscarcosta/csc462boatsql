@@ -1,0 +1,103 @@
+version: '3.7'
+
+services:
+  # Docker Visualizer
+  visualizer:
+    image: dockersamples/visualizer:stable
+    networks: 
+      - cluster
+    ports:
+      - 8080:8080
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  # MySQL NDB Manager
+  management:
+    image: oscarcosta/boat-mysql-cluster
+    networks: 
+      - cluster
+    entrypoint: /my_entrypoint.sh
+    command: ndb_mgmd --ndb-nodeid=1
+    deploy:
+      #replicas: 3
+      #endpoint_mode: dnsrr
+      placement:
+        #constraints: [node.labels.type == services]
+        constraints: [node.role == manager]
+
+  # MySQL NDB Data Nodes
+  ndb1:
+    image: oscarcosta/boat-mysql-cluster
+    networks: 
+      - cluster
+    entrypoint: /my_entrypoint.sh
+    command: ndbd
+    depends_on:
+      - management
+    deploy:
+      #endpoint_mode: dnsrr
+      placement:
+        constraints: [node.labels.type == data]
+
+  ndb2:
+    image: oscarcosta/boat-mysql-cluster
+    networks: 
+      - cluster
+    entrypoint: /my_entrypoint.sh
+    command: ndbd
+    depends_on:
+      - management
+    deploy:
+      #endpoint_mode: dnsrr
+      placement:
+        constraints: [node.labels.type == data]
+
+  # MySQL API Nodes
+  mysql:
+    image: oscarcosta/boat-mysql-cluster
+    networks: 
+      - cluster
+    environment:
+      - MYSQL_ROOT_PASSWORD=Password
+      - MYSQL_DATABASE=boatdb
+      - MYSQL_USER=boat
+      - MYSQL_PASSWORD=boat
+    entrypoint: /my_entrypoint.sh
+    command: mysqld
+    depends_on:
+      - management
+      - ndb1
+      - ndb2
+    deploy:
+      #replicas: 3
+      #endpoint_mode: dnsrr
+      placement:
+        constraints: [node.labels.type == services]
+
+  # Web App
+  web:
+    image: oscarcosta/boat-web-app
+    networks: 
+      - cluster
+    ports:
+      - 80:3000
+    environment:
+      - MYSQL_host=mysql
+      - MYSQL_database=boatdb
+      - MYSQL_user=boat
+      - MYSQL_password=boat
+      - CSV_filename=data.csv
+    command: /bin/bash -c "cd /usr/src/web_app && npm install -y && npm start"
+    depends_on:
+      - mysql
+    deploy:
+      #replicas: 3
+      placement:
+        constraints: [node.labels.type == services]
+
+networks:
+  cluster:
+    external: true # Use a pre-existing network

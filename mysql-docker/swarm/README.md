@@ -2,6 +2,8 @@
 
 ## Docker related files/folders
 
+**mysql-cluster/** - mysql-cluster docker image
+
 **web-app/** - web-app docker image
 
 **docker-compose.yml** - docker containers configuration
@@ -10,9 +12,13 @@
 
 **install-docker.sh** - Install docker in a vm and init/join a swarm
 
+**configure-docker.sh** - Configure the docker nodes (labels)
+
 **publish-images.sh** - Publish images in Docker Hub
 
-**deploy-swarm.sh** - deploy web app cluster using docker swarm
+**deploy-mysql-cluster.sh** - deploy mysql cluster + web app using docker compose
+
+**deploy-swarm.sh** - deploy mysql cluster + web app using docker swarm
 
 **util.sh** - util scripts
 

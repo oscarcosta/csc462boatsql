@@ -30,7 +30,8 @@
 # docker service ps boatapp_web
 
 # docker service inspect --pretty boatapp_web
-# docker service logs -f boatapp_web
+# docker service logs boatapp_web
+# docker service logs -f boatapp_management
 
 ## Scale up a service
 # docker service scale boatapp_web=2
@@ -40,13 +41,20 @@
 # docker service rm `docker service ls -q`
 
 ####################
-## container
+## mysql container
 
 # docker container ls
 
+## Verify the mysql cluster
+# docker exec -it cluster_mysql1_1 ndb_mgm -e "show"
+
+## Import database
+# docker exec -it cluster_mysql1_1 mysql -u root -p -e "$(cat ../boat.sql)"
+
+## Connecting to MySQL Server from within the container
+# docker exec -it cluster_mysql1_1 mysql -u root -p
+
 ## Container shell access
-# docker exec -it boatapp_web bash 
+# docker exec -it cluster_mysql1_1 bash 
 
-## Check if container have access to others via hostname
-# docker exec boatapp_web getent hosts boatapp_web
-
+# docker exec boatapp_management getent hosts ndb1 

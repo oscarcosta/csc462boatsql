@@ -1,35 +1,54 @@
 # Docker Swarm Boat Cluster
 
-## Docker related files/folders
+## Environment
+
+### Serve 4
+
+- Private IP: 172.31.48.221
+- Remote access: ssh -i boatkey.pem ubuntu@52.12.211.23
+- Role: Docker Swarm Server / MySQL NDB API Server
+
+### Serve 5
+
+- Private IP: 172.31.48.110
+- Remote access: ssh -i boatkey.pem ubuntu@35.163.15.194
+- Role: Docker Swarm Server / MySQL NDB API Server
+
+## Files in this folder
+
+### Docker related files/folders
 
 **web-app/** - web-app docker image
 
 **docker-compose.yml** - docker containers configuration
 
-## Shell scripts
+### Shell scripts
 
-**install-docker.sh** - Install docker in a vm and init/join a swarm
+**deploy-swarm.sh** - Script to deploy web app cluster using docker swarm
 
-**publish-images.sh** - Publish images in Docker Hub
+**init-swarm.sh** - Commands to initalize the swarm
 
-**deploy-swarm.sh** - deploy web app cluster using docker swarm
+**install-docker.sh** - Script to install docker in a vm during launch
 
-**util.sh** - util scripts
+**publish-images.sh** - Script to publish images in Docker Hub
 
-## AWS EC2 vms
+**util.sh** - Utility commands
 
-### Manager
+## Instalation (Ubuntu Linux 18.04)
 
-ssh -i boatkey.pem ubuntu@35.162.107.88
+1. Clone the project repository into one of the machines, and enter the *~/csc462boatsql/swarm* folder;
 
-* private ip = 172.31.29.253
+2. Execute the script *install-docker-(linux|ubuntu).sh* to install docker on all machines that will be part of the swarm.
 
-### Workers
+3. Initialize and join the swarm from all machines which are part of the swarm. See *init-swarm.sh*.
 
-ssh -i boatkey.pem ubuntu@54.245.193.17
+4. Execute the script to initialize the database: *mysql -u root -p < -../boat.sql*
 
-* private ip = 172.31.26.64
+5. Create the application user in the database:
 
-ssh -i boatkey.pem ubuntu@18.236.164.63
+    ```sql
+    CREATE USER 'boatuser'@'%' identified by 'boatpass';
+    GRANT ALL ON boatdb.* to 'boatuser'@'%' identified by 'boatpass';
+    ```
 
-* private ip = 172.31.17.237
+6. Execute the script *deploy-swarm.sh*

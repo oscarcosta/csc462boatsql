@@ -2,25 +2,18 @@
 
 ## Init or join a swarm
 
- docker swarm init --listen-addr 172.31.29.253 \
- --advertise-addr 172.31.29.253 \
- --data-path-addr 172.31.29.253
+ docker swarm init --listen-addr 172.31.48.221 \
+ --advertise-addr 172.31.48.221 \
+ --data-path-addr 172.31.48.221
 
 # docker swarm join-token worker
 
 docker swarm join \
- --listen-addr 172.31.26.64 \
- --advertise-addr 172.31.26.64 \
- --data-path-addr 172.31.26.64 \
- --token SWMTKN-1-1i9pdihfdgwzq4lsfdvmdghtlkxabhf7ahjgk0fftouwlu0z0x-dxze072pclv68hpjp2ioxey3y \
- 172.31.29.253:2377
-
-docker swarm join \
- --listen-addr 172.31.17.237 \
- --advertise-addr 172.31.17.237 \
- --data-path-addr 172.31.17.237 \
- --token SWMTKN-1-1i9pdihfdgwzq4lsfdvmdghtlkxabhf7ahjgk0fftouwlu0z0x-dxze072pclv68hpjp2ioxey3y \
- 172.31.29.253:2377
+ --listen-addr 172.31.48.110 \
+ --advertise-addr 172.31.48.110 \
+ --data-path-addr 172.31.48.110 \
+ --token WORKER_TOKEN \
+ 172.31.48.221:2377
 
 ## Leave swarm
 # docker swarm leave --force

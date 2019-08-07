@@ -4,8 +4,11 @@ After=network.target auditd.service
 
 [Service]
 Type=forking
+
 ExecStart=/usr/sbin/ndbd
+
 ExecReload=/bin/kill -HUP $MAINPID
+
 KillMode=process
 Restart=on-failure
 

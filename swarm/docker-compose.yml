@@ -22,16 +22,16 @@ services:
     ports:
       - 80:3000
     environment:
-      - MYSQL_host=mysql
+      - MYSQL_host={{.Node.Hostname}}
       - MYSQL_database=boatdb
-      - MYSQL_user=boat
-      - MYSQL_password=boat
+      - MYSQL_user=boatuser
+      - MYSQL_password=boatpass
       - CSV_filename=data.csv
     command: /bin/bash -c "cd /usr/src/web_app && npm install -y && npm start"
     depends_on:
       - mysql
     deploy:
-      #replicas: 3
+      replicas: 4
 
 networks:
   cluster:

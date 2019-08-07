@@ -1,0 +1,20 @@
+[Unit]
+Description=MySQL NDB API Server
+After=network.target syslog.target
+
+[Service]
+User=mysql
+Group=mysql
+
+Type=forking
+
+PIDFile=/var/run/mysqld/mysqld.pid
+ExecStart=/usr/sbin/mysqld --pid-file=/var/run/mysqld/mysqld.pid $MYSQLD_OPTS
+
+ExecReload=/bin/kill -HUP $MAINPID
+
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

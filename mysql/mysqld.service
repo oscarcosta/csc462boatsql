@@ -8,8 +8,7 @@ Group=mysql
 
 Type=forking
 
-PIDFile=/var/run/mysqld/mysqld.pid
-ExecStart=/usr/sbin/mysqld --pid-file=/var/run/mysqld/mysqld.pid $MYSQLD_OPTS
+ExecStart=/usr/sbin/mysqld $MYSQLD_OPTS
 
 ExecReload=/bin/kill -HUP $MAINPID
 

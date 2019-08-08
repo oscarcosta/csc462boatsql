@@ -2,35 +2,47 @@
 
 ## Environment
 
-### Serve 1
+### Serve 1 (Management)
 
 - Private IP: 172.31.52.186
 - Remote access: ssh -i boatkey.pem ubuntu@54.184.34.52
-- Role: MySQL NDB Cluster Management Server / MySQL NDB API Server
+- Role: MySQL NDB Cluster Management Server / Docker Swarm Manager
 
-### Serve 2
+### Serve 2 (Data 1)
 
 - Private IP: 172.31.53.216
 - Remote access: ssh -i boatkey.pem ubuntu@54.202.25.214
 - Role: MySQL NDB Data Node
 
-### Serve 3
+### Serve 3 (Data 2)
 
 - Private IP: 172.31.61.27
 - Remote access: ssh -i boatkey.pem ubuntu@34.209.105.109
 - Role: MySQL NDB Data Node
 
-### Serve 4
+### Serve 4 (Data 3)
+
+- Private IP: 172.31.56.189
+- Remote access: ssh -i boatkey.pem ubuntu@35.163.211.84
+- Role: MySQL NDB Data Node
+
+### Serve 5 (Data 4)
+
+- Private IP: 172.31.49.140
+- Remote access: ssh -i boatkey.pem ubuntu@54.245.39.190
+- Role: MySQL NDB Data Node
+
+### Serve 4 (Worker 1)
 
 - Private IP: 172.31.48.221
 - Remote access: ssh -i boatkey.pem ubuntu@52.12.211.23
-- Role: MySQL NDB API Server / Docker Swarm Server
+- Role: MySQL NDB API Server / Docker Swarm Worker
 
-### Serve 5
+### Serve 5 (Worker 2)
 
 - Private IP: 172.31.48.110
 - Remote access: ssh -i boatkey.pem ubuntu@35.163.15.194
-- Role: MySQL NDB API Server / Docker Swarm Server
+- Role: MySQL NDB API Server / Docker Swarm Worker
 
 ## Instalation (Ubuntu Linux 18.04)
 
@@ -82,6 +94,8 @@ Reference: https://dev.mysql.com/doc/refman/8.0/en/mysql-cluster-install-configu
 
 `sudo systemctl enable ndb_mgmd`
 
+`sudo systemctl start ndb_mgmd`
+
 ### Configuring the MySQL NDB Data Nodes
 
 - Create/edit config file:
@@ -98,6 +112,8 @@ Reference: https://dev.mysql.com/doc/refman/8.0/en/mysql-cluster-install-configu
 
 `sudo systemctl enable ndbd`
 
+`sudo systemctl start ndbd`
+
 ### Configuring the MySQL NDB API Servers
 
 - Create/edit config file:
@@ -110,10 +126,17 @@ Reference: https://dev.mysql.com/doc/refman/8.0/en/mysql-cluster-install-configu
 
 `sudo systemctl enable mysqld`
 
+`sudo systemctl start mysqld`
+
 - Comment the line **#bind-address = 127.0.0.1** in the file */etc/mysql/mysql.conf.d/mysqld.cnf* to allow remote connections.
 
-Troubleshoot: Because it was created only one vm image for all 3 roles, the *mysqld* does not start.
+Troubleshoot 1: Because it was created only one vm image for all 3 roles, the *mysqld* does not start.
 To solve this problem, it is necessary to add the line **/etc/my.cnf r** in the file */etc/apparmor.d/usr.sbin.mysqld* and then udate the apparmor:
+
+Troubleshoot 2: Create the */var/run/mysqld* dir and change it ownership to *mysql:mysql*:
+
+`sudo mkdir /var/run/mysqld`
+`sudo chown mysql:mysql /var/run/mysqld`
 
 `sudo apparmor_parser -r /etc/apparmor.d/usr.sbin.mysqld`
 

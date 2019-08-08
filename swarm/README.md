@@ -2,17 +2,23 @@
 
 ## Environment
 
-### Serve 4
+### Serve 1 (Management)
+
+- Private IP: 172.31.52.186
+- Remote access: ssh -i boatkey.pem ubuntu@54.184.34.52
+- Role: MySQL NDB Cluster Management Server / Docker Swarm Manager
+
+### Serve 4 (Worker 1)
 
 - Private IP: 172.31.48.221
 - Remote access: ssh -i boatkey.pem ubuntu@52.12.211.23
-- Role: Docker Swarm Server / MySQL NDB API Server
+- Role: MySQL NDB API Server / Docker Swarm Worker
 
-### Serve 5
+### Serve 5 (Worker 2)
 
 - Private IP: 172.31.48.110
 - Remote access: ssh -i boatkey.pem ubuntu@35.163.15.194
-- Role: Docker Swarm Server / MySQL NDB API Server
+- Role: MySQL NDB API Server / Docker Swarm Worker
 
 ## Files in this folder
 
@@ -42,7 +48,7 @@
 
 3. Initialize and join the swarm from all machines which are part of the swarm. See *init-swarm.sh*.
 
-4. Execute the script to initialize the database: *mysql -u root -p < -../boat.sql*
+4. Execute the script to initialize the database: *mysql -u root -p < ../boat.sql*
 
 5. Create the application user in the database:
 

@@ -133,12 +133,12 @@ Reference: https://dev.mysql.com/doc/refman/8.0/en/mysql-cluster-install-configu
 Troubleshoot 1: Because it was created only one vm image for all 3 roles, the *mysqld* does not start.
 To solve this problem, it is necessary to add the line **/etc/my.cnf r** in the file */etc/apparmor.d/usr.sbin.mysqld* and then udate the apparmor:
 
+`sudo apparmor_parser -r /etc/apparmor.d/usr.sbin.mysqld`
+
 Troubleshoot 2: Create the */var/run/mysqld* dir and change it ownership to *mysql:mysql*:
 
 `sudo mkdir /var/run/mysqld`
 `sudo chown mysql:mysql /var/run/mysqld`
-
-`sudo apparmor_parser -r /etc/apparmor.d/usr.sbin.mysqld`
 
 ## Cluster Management
 

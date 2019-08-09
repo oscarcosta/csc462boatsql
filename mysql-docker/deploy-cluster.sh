@@ -44,7 +44,7 @@ docker run -d --net=$CLUSTER --name=$SERVER --ip=192.168.0.20 -e MYSQL_ROOT_PASS
 
 # wait the cluster to start
 echo "# Please, hold on until the cluster initializes..."
-sleep 10
+sleep 30
 
 # change the mysql root password
 #temp_pass=$(docker logs $SERVER 2>&1 | grep 'PASSWORD' | awk '{print $5}')

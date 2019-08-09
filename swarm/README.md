@@ -2,22 +2,22 @@
 
 ## Environment
 
-### Serve 1 (Management)
+### Management
 
 - Private IP: 172.31.52.186
-- Remote access: ssh -i boatkey.pem ubuntu@54.184.34.52
+- Remote access: ssh -i boatkey.pem ubuntu@54.202.10.46
 - Role: MySQL NDB Cluster Management Server / Docker Swarm Manager
 
-### Serve 4 (Worker 1)
+### Worker 1
 
 - Private IP: 172.31.48.221
-- Remote access: ssh -i boatkey.pem ubuntu@52.12.211.23
+- Remote access: ssh -i boatkey.pem ubuntu@54.190.172.233
 - Role: MySQL NDB API Server / Docker Swarm Worker
 
-### Serve 5 (Worker 2)
+### Worker 2
 
 - Private IP: 172.31.48.110
-- Remote access: ssh -i boatkey.pem ubuntu@35.163.15.194
+- Remote access: ssh -i boatkey.pem ubuntu@35.160.227.14
 - Role: MySQL NDB API Server / Docker Swarm Worker
 
 ## Files in this folder

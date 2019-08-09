@@ -27,7 +27,6 @@ services:
       - MYSQL_user=boatuser
       - MYSQL_password=boatpass
       - CSV_filename=data.csv
-    command: /bin/bash -c "cd /usr/src/web_app && npm install -y && npm start"
     depends_on:
       - mysql
     deploy:

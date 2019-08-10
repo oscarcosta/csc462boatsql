@@ -43,8 +43,8 @@ CREATE TABLE parts (
 	`weight` FLOAT, -- "Weight Per Unit (LBS)" in CSV
 	`material_and_color` INT,
 	`size` TEXT,
-	FOREIGN KEY (`material_and_color`) REFERENCES materials(`id`) ON DELETE RESTRICT
-	FOREIGN KEY (`specHeading`) REFERENCES specHeadings(`id`) ON DELETE RESTRICT,
+	FOREIGN KEY (`material_and_color`) REFERENCES materials(`id`) ON DELETE RESTRICT,
+	FOREIGN KEY (`specHeading`) REFERENCES specHeadings(`id`) ON DELETE RESTRICT
 ) ENGINE=NDBCLUSTER;
 
 -- Some features are repeated, so I'm thinking they're some kind of tag
@@ -78,7 +78,7 @@ CREATE TABLE boatParts (
 	FOREIGN KEY (`boatID`) REFERENCES boats(`id`) ON DELETE RESTRICT,
 	FOREIGN KEY (`partID`) REFERENCES parts(`id`) ON DELETE RESTRICT,
 	FOREIGN KEY (`location`) REFERENCES locations(`id`) ON DELETE RESTRICT,
-	FOREIGN KEY (`parent`) REFERENCES boatParts(`id`) ON DELETE RESTRICT,
+	FOREIGN KEY (`parent`) REFERENCES boatParts(`id`) ON DELETE RESTRICT
 ) ENGINE=NDBCLUSTER;
 
 -- Each boat has multiple features!

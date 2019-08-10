@@ -27,6 +27,7 @@ services:
       - MYSQL_user=boatuser
       - MYSQL_password=boatpass
       - CSV_filename=data.csv
+      - MYSQL_connection_limit=10
     depends_on:
       - mysql
     deploy:

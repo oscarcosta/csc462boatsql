@@ -4,9 +4,6 @@ WORKDIR /usr/src/app/web_app
 
 COPY ./web/ .
 
-RUN apt-get update
-RUN apt-get install sysbench
-
 RUN npm install -y
 
 #EXPOSE 3000

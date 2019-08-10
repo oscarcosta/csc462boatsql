@@ -31,7 +31,7 @@
 
 # docker service inspect --pretty boatapp_web
 # docker service logs boatapp_web
-# docker service logs -f boatapp_management
+# docker service logs -f boatapp_web
 
 ## Scale up a service
 # docker service scale boatapp_web=2

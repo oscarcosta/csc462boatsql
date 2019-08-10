@@ -16,7 +16,7 @@ services:
 
   # Web App
   web:
-    image: web-app
+    image: localhost:5000/web-app
     networks: 
       - cluster
     ports:

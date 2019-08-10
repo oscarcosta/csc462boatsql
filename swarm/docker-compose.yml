@@ -16,7 +16,7 @@ services:
 
   # Web App
   web:
-    image: oscarcosta/boat-web-app
+    image: web-app
     networks: 
       - cluster
     ports:
